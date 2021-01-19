@@ -1,0 +1,28 @@
+{
+    "name": "pixels-web",
+    "version": "0.1.0",
+    "description": "Pixels web app",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/davideparpinello/pixels-web.git"
+    },
+    "author": "Pixels",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/davideparpinello/pixels-web/issues"
+    },
+    "homepage": "https://github.com/davideparpinello/pixels-web#readme",
+    "dependencies": {
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "file-type": "^16.1.0",
+        "formidable": "^1.2.2",
+        "fs": "^0.0.1-security",
+        "path": "^0.12.7",
+        "read-chunk": "^3.2.0"
+    }
+}
