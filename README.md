@@ -1,3 +1,3 @@
 # Pixels - Web app
 
- Web app for Pixels projext
+ Web app for Pixels project
