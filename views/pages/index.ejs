@@ -9,8 +9,8 @@
                         <div class="tm-img-gallery-container">
                             <div class="tm-img-gallery gallery-one grid">
 
-                                <% for(var i=0; i<imagesDB.length; i++) {%>
-                                    <%- include('../partials/singlePhoto', {"photo": imagesDB[i]}); %>
+                                <% for(var i=0; i<imagesParsed.length; i++) {%>
+                                    <%- include('../partials/singlePhoto', {"photo": imagesParsed[i]}); %>
                                         <% } %>
 
                             </div>
