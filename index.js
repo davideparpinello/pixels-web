@@ -4,6 +4,15 @@ var path = require('path')
 var fs = require("fs")
 var formidable = require('formidable')
 var readChunk = require('read-chunk')
+var serverSocket = app.listen(3001, function () {
+    console.log("Started socket...")
+})
+var io = require('socket.io')(serverSocket, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
 const FileType = require('file-type')
 const imagesFolder = path.join(__dirname, "public/img");
 
@@ -43,6 +52,34 @@ function main() {
         }); //passiamo il databse immagini
     });
 
+    app.get('/util/images', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(imagesParsed));
+    })
+
+    io.on('connection', (socket => {
+        console.log('User connected to socket');
+    }))
+
+    app.get('/util/pyupdate/:ID/:PERC', function (req, res) {
+        res.send("Ok");
+        imagesParsed.forEach(element => {
+            if (element.ID == req.params.ID) {
+                element.perc = req.params.PERC;
+                fs.writeFileSync('images.json', JSON.stringify(imagesParsed), 'utf-8');
+                return;
+            }
+        });
+
+        var update = {
+            'ID': req.params.ID,
+            'perc': req.params.PERC
+        }
+
+        io.emit('imageUpdate', JSON.stringify(update));
+
+    })
+
     app.post('/upload_photos', function (req, res) {
         var photos = [],
             form = new formidable.IncomingForm();
@@ -79,7 +116,14 @@ function main() {
                         type: type.ext,
                         publicPath: 'uploads/' + filename
                     });
-                    console.log("upload");
+                    let num = imagesParsed[imagesParsed.length - 1].ID;
+                    console.log(num);
+                    imagesParsed.push({
+                        "ID": num + 1,
+                        "path": "img/" + filename
+                    })
+                    fs.writeFileSync('images.json', JSON.stringify(imagesParsed), 'utf-8');
+
                 } else {
                     photos.push({
                         status: false,

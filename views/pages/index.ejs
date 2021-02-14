@@ -69,7 +69,48 @@
                     acceptedFileTypes: ['image/*'],
                     allowRevert: false
                 });
+
+
+                document.addEventListener('FilePond:processfile', e => {
+                    $.getJSON("/util/images", function (data) {
+                        $(data).each(function (key, val) {
+                            if (!$('.tm-img-gallery .grid-item img[data-id="' + val.ID + '"]').length) {
+
+                                var HTML = '<div class="grid-item flexmasonry-item">';
+                                HTML += '<figure class="effect-sadie">';
+                                HTML += '<img src="' + val.path + '" data-id="' + val.ID + '" alt="Image" class="img-fluid tm-img">';
+                                HTML += '<figcaption>';
+                                HTML += '<h2 class="tm-figure-title"> <span><strong></strong></span></h2>';
+                                HTML += '<p class="tm-figure-description">';
+                                HTML += '</p>';
+                                HTML += '<a href="' + val.path + '">View more</a>';
+                                HTML += '</figcaption>';
+                                HTML += '</figure>';
+                                HTML += '</div>';
+
+                                $('.flexmasonry').append(HTML);
+
+                            }
+
+
+                        });
+                        /* $('.tm-img-gallery .grid-item  img').each(function (key, val) {
+                                            console.log($(val).data("id"));
+                        }) */
+                    })
+                });
+
                 $(function () {
+
+                    const socket = io("ws://localhost:3001");
+
+                    socket.on('imageUpdate', (data) => {
+                        console.log("Message received from socket");
+                        var update = JSON.parse(data);
+                        $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().find('.tm-figure-description').text(update.perc + "%");
+                    });
+
+
                     $('.gallery-one').magnificPopup({
                         delegate: 'a',
                         type: 'image',
