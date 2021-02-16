@@ -106,3 +106,5 @@ dist
 weights/yolov3.weights
 
 __pycache__/
+
+.vscode/
