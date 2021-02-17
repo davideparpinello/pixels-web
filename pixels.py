@@ -53,6 +53,39 @@ ssimVal = 15
 
 while True:
 
+    newCampione = cv2.imread('./public/campione.jpg')
+    if(not(newCampione.shape == campione.shape and not(np.bitwise_xor(newCampione,campione).any()))):
+        print("Immagine campione modificata, ricontrollo il campione")
+        campione = newCampione
+
+        istogrammi = {'red': [], 'green': [], 'blue': [], 'gray': []}
+
+        img1 = cv2.cvtColor(campione, cv2.COLOR_BGR2GRAY)
+        istogrammi['gray'] = cv2.calcHist([img1], [0], None, [256], [0, 256])
+
+        img1 = cv2.cvtColor(campione, cv2.COLOR_BGR2RGB)
+
+        istogrammi['red'] = cv2.calcHist([img1], [0], None, [256], [0, 256])
+        istogrammi['green'] = cv2.calcHist([img1], [1], None, [256], [0, 256])
+        istogrammi['blue'] = cv2.calcHist([img1], [2], None, [256], [0, 256])
+
+        resized_image = cv2.resize(img1, (m.width, m.height))
+
+        boxes = detect_objects(m, resized_image, iou_thresh, nms_thresh)
+
+        oggetti = {}
+
+        for i in range(len(boxes)):
+            box = boxes[i]
+            if len(box) >= 7 and class_names:
+                cls_conf = box[5]
+                cls_id = box[6]
+                oggetti[cls_id] = cls_conf
+
+        nuovaImmagine = {'istogrammi': {}, 'oggetti': {}}
+        nuovaImmagine['istogrammi'] = istogrammi
+        nuovaImmagine['oggetti'] = oggetti
+
     with open('./images.json') as json_data:
         images = json.load(json_data)
 
@@ -142,3 +175,5 @@ while True:
 
                 request = requests.get(
                     'http://localhost:3000/util/pyupdate/' + str(ID) + '/' + str(comparison))
+
+                break

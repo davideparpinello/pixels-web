@@ -1,4 +1,4 @@
-<div class="grid-item" data-perc="<%if(photo['ID'] == 0) { %>110<% } %>">
+<div class="grid-item" data-perc="<%if(photo['ID'] == 0) { %>110<% } else if (photo['perc'] != null){%><%=photo.perc%><% } %>">
     <figure class="effect-sadie">
         <img src="<%=photo.path%>" data-id="<%=photo.ID%>" alt="Image" class="img-fluid tm-img">
         <figcaption>

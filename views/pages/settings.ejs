@@ -1,0 +1,75 @@
+<%- include('../partials/head') %>
+    <!--sto chiamando l'interprete passa alla parte dinamica-->
+    <%- include('../partials/header') %>
+
+    <ul class="cd-hero-slider">
+        <li class="selected">
+            <div class="cd-full-width">
+                <div class="container-fluid js-tm-page-content" data-page-no="1" data-page-type="gallery">
+                    <div class="container-fluid" style="background-color: lightgrey; padding: 50px">
+                        <div class="row">
+                          <div class="col-4">
+                            <h2>Foto campione</h2>
+                            <form id="upload-campione" method="post" action="/upload_campione" enctype="multipart/form-data">
+                                <div class="modal-body">
+        
+                                    <input type="file" class="filepond">
+        
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                            <br><br>
+                            <img src="campione.jpg" class="img-fluid" alt="Immagine campione" id="imgCampione">
+                          </div>
+                          <div class="col-8">
+                              
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <footer class="tm-footer">
+
+        <p class="tm-copyright-text">Copyright &copy; <span class="tm-copyright-year">current year</span> PIXELS</p>
+
+    </footer>
+
+    <script>
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+        FilePond.registerPlugin(FilePondPluginFileEncode);
+        FilePond.registerPlugin(FilePondPluginFileValidateType);
+        FilePond.parse(document.body);
+        FilePond.setOptions({
+            server: '/upload_campione',
+            acceptedFileTypes: ['image/*'],
+            allowRevert: false
+        });
+
+        document.addEventListener('FilePond:processfile', e => {
+            var url = $("#imgCampione").attr("src");
+            $("#imgCampione").attr("src", url + `?v=${new Date().getTime()}`);
+        });
+
+        $(function () {
+
+            $('#tmNavbar a').click(function () {
+                $('#tmNavbar').collapse('hide');
+
+            });
+            $('body').addClass('loaded');
+            $(".tm-copyright-year").text(new Date().getFullYear());
+            FlexMasonry.init('.grid', {
+                responsive: false,
+                numCols: 5
+            });
+        });
+
+
+    </script>
+</body>
+</html>

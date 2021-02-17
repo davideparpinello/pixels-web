@@ -52,6 +52,10 @@ function main() {
         }); //passiamo il databse immagini
     });
 
+    app.get('/settings', function (req, res) {
+        res.render('pages/settings'); //passiamo il databse immagini
+    });
+
     app.get('/util/images', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(imagesParsed));
@@ -147,6 +151,73 @@ function main() {
         // Parse the incoming form fields.
         form.parse(req, function (err, fields, files) {
             res.status(200).json(photos);
+        });
+    });
+
+    app.post('/upload_campione', function (req, res) {
+        var photo = [],
+            form = new formidable.IncomingForm();
+
+        // Upload directory for the images
+        form.uploadDir = path.join(__dirname, 'tmp_uploads');
+
+        // Invoked when a file has finished uploading.
+        form.on('file', function (name, file) {
+
+
+            var buffer = null,
+                type = null,
+                filename = '';
+
+            // Read a chunk of the file.
+            buffer = readChunk.sync(file.path, 0, 260);
+            // Get the file type using the buffer read using read-chunk
+
+            FileType.fromBuffer(buffer).then(function (type) {
+                // Check the file type, must be either png,jpg or jpeg
+                if (type !== null && (type.ext === 'png' || type.ext === 'jpg' || type.ext === 'jpeg')) {
+                    // Assign new file name
+                    filename = "campione." + type.ext;
+                    console.log(filename);
+                    // Move the file with the new file name
+                    fs.rename(file.path, path.join(__dirname, 'public/' + filename), function () { });
+
+                    // Add to the list of photos
+                    photo.push({
+                        status: true,
+                        filename: filename,
+                        type: type.ext,
+                        publicPath: 'uploads/' + filename
+                    });
+
+                    imagesParsed.forEach(element => {
+                        delete element["perc"]
+                    });
+                    fs.writeFileSync('images.json', JSON.stringify(imagesParsed), 'utf-8');
+
+                } else {
+                    photo.push({
+                        status: false,
+                        filename: file.name,
+                        message: 'Invalid file type'
+                    });
+                    fs.unlink(file.path);
+                }
+            });
+        });
+
+        form.on('error', function (err) {
+            console.log('Error occurred during processing - ' + err);
+        });
+
+        // Invoked when all the fields have been processed.
+        form.on('end', function () {
+            console.log('All the request fields have been processed.');
+        });
+
+        // Parse the incoming form fields.
+        form.parse(req, function (err, fields, files) {
+            res.status(200).json(photo);
         });
     });
 
