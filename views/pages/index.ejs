@@ -8,7 +8,10 @@
                     <div class="container-fluid js-tm-page-content" data-page-no="1" data-page-type="gallery">
                         <div class="tm-img-gallery-container">
                             <div class="tm-img-gallery gallery-one grid">
-
+                                <%- include('../partials/singlePhoto', {"photo": {
+                                    "ID" : 0,
+                                    "path" : "campione.jpg"
+                                }}); %>
                                 <% for(var i=0; i<imagesParsed.length; i++) {%>
                                     <%- include('../partials/singlePhoto', {"photo": imagesParsed[i]}); %>
                                         <% } %>
@@ -108,6 +111,11 @@
                         console.log("Message received from socket");
                         var update = JSON.parse(data);
                         $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().find('.tm-figure-description').text(update.perc + "%");
+                        $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().parent().attr("data-perc", update.perc)
+
+                        $('.tm-img-gallery').find('.grid-item').sort(function(a, b){
+                            return b.dataset.perc - a.dataset.perc;
+                        }).appendTo($('.tm-img-gallery'))
                     });
 
 

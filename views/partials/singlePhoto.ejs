@@ -1,9 +1,14 @@
-<div class="grid-item">
+<div class="grid-item" data-perc="<%if(photo['ID'] == 0) { %>110<% } %>">
     <figure class="effect-sadie">
         <img src="<%=photo.path%>" data-id="<%=photo.ID%>" alt="Image" class="img-fluid tm-img">
         <figcaption>
             <h2 class="tm-figure-title"> <span><strong></strong></span></h2>
             <p class="tm-figure-description">
+                <%if(photo["ID"] == 0) { %>
+                    Campione
+                <% } else if (photo["perc"] != null){%>
+                    <%=photo.perc%>%
+                <% } %>
             </p>
             <a href="<%=photo.path%>">View more</a>
         </figcaption>

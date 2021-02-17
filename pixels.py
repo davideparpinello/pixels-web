@@ -47,14 +47,14 @@ nuovaImmagine = {'istogrammi': {}, 'oggetti': {}}
 nuovaImmagine['istogrammi'] = istogrammi
 nuovaImmagine['oggetti'] = oggetti
 
+histVal = 60
+objectVal = 25
+ssimVal = 15
+
 while True:
 
     with open('./images.json') as json_data:
         images = json.load(json_data)
-
-        histVal = 40
-        objectVal = 60
-        ssimVal = 0
 
         for item in images:
 
@@ -128,8 +128,9 @@ while True:
                 if percOggetti > 100:
                     percOggetti = 100
 
-                # percSSIM = ssim(campione, img)
-                percSSIM = 0
+                img1ssim = cv2.resize(img, (1000, 1000))
+                img2ssim = cv2.resize(campione, (1000, 1000))
+                percSSIM = (ssim(img1ssim, img2ssim, multichannel=True))*100
 
                 comparison = (
                     histVal*percHist+objectVal*percOggetti+ssimVal*percSSIM)/100
