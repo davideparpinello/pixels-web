@@ -53,8 +53,28 @@ function main() {
     });
 
     app.get('/settings', function (req, res) {
-        res.render('pages/settings'); //passiamo il databse immagini
+        let algWeights = JSON.parse(fs.readFileSync('algWeights.json'))
+        res.render('pages/settings', {
+            algWeights
+        }); //passiamo il databse immagini
     });
+
+    app.get('/util/weightsUpdate/:hist/:yolo/:ssim', function (req, res) {
+        var newHist = req.params.hist;
+        var newYolo = req.params.yolo;
+        var newSsim = req.params.ssim;
+
+        var newWeights = {};
+        newWeights.hist = newHist;
+        newWeights.yolo = newYolo;
+        newWeights.ssim = newSsim;
+        fs.writeFileSync('algWeights.json', JSON.stringify(newWeights), 'utf-8');
+        imagesParsed.forEach(element => {
+            delete element["perc"]
+        });
+        fs.writeFileSync('images.json', JSON.stringify(imagesParsed), 'utf-8');
+        res.send("Ok");
+    })
 
     app.get('/util/images', function (req, res) {
         res.setHeader('Content-Type', 'application/json');

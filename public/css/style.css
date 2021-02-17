@@ -716,3 +716,139 @@ figure.effect-sadie:hover p {
         padding-right: 0
     }
 }
+
+.multiRange {
+    margin: 3em 0;
+    width: 100%;
+    min-width: 150px;
+  }
+  .multiRange.type1 .multiRange__range {
+    color: #EEE;
+    transition: 50ms;
+  }
+  .multiRange.type1 .multiRange__range:nth-child(2) {
+    color: #EC5564;
+  }
+  .multiRange.type1 .multiRange__range .multiRange__handle {
+    box-shadow: none;
+    background: #EC5564;
+  }
+  .multiRange.type1 .multiRange__range .multiRange__handle__value {
+    background: #EC5564;
+    color: white;
+  }
+  .multiRange.type1 .multiRange__range .multiRange__handle__value::after {
+    border-color: #EC5564 transparent transparent;
+  }
+  
+  body.multiRange-grabbing {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+  }
+  
+  .multiRange {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+  .multiRange__rangeWrap {
+    height: 20px;
+    background: #E8E8E8;
+    border-radius: 3px;
+    position: relative;
+    z-index: 5;
+  }
+  .multiRange__range {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background: currentColor;
+  }
+  .multiRange__range:nth-child(1) {
+    color: #e5b26c;
+  }
+  .multiRange__range:nth-child(2) {
+    color: #d1e56c;
+  }
+  .multiRange__range:nth-child(3) {
+    color: #8ae56c;
+  }
+  .multiRange__range:nth-child(4) {
+    color: #6ce594;
+  }
+  .multiRange__range:nth-child(5) {
+    color: #6ce5db;
+  }
+  .multiRange__range:first-child > .multiRange__handle {
+    display: none;
+  }
+  .multiRange__range.grabbed > .handle {
+    background: black;
+  }
+  .multiRange__range .multiRange__handle {
+    width: 4px;
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    left: -1px;
+    cursor: -webkit-grab;
+    cursor: grab;
+    background: currentColor;
+    box-shadow: 1px 0 white, -1px 0 white;
+    transition: 0.2s;
+  }
+  .multiRange__range .multiRange__handle:active {
+    cursor: inherit;
+  }
+  .multiRange__range .multiRange__handle__value {
+    position: absolute;
+    transform: translate(-50%, -6px);
+    min-width: 10px;
+    background: #333;
+    color: white;
+    padding: 2px 6px;
+    top: -100%;
+    left: 0;
+    white-space: nowrap;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: default;
+  }
+  .multiRange__range .multiRange__handle__value::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -3px;
+    border-color: #333 transparent transparent;
+    border-style: solid;
+    border-width: 3px 4px;
+    transform: translate(-50%, 50%);
+    color: #333;
+    font-size: 15px;
+  }
+  .multiRange__ticks {
+    display: flex;
+    justify-content: space-between;
+    height: 6px;
+    margin: 2px 0 0 0;
+    font: 10px Arial;
+    cursor: default;
+  }
+  .multiRange__ticks > div {
+    height: 100%;
+    width: 1px;
+    background: #DDD;
+    color: #888;
+  }
+  .multiRange__ticks > div:nth-child(5n-4) {
+    height: 200%;
+  }
+  .multiRange__ticks > div:nth-child(5n-4)::before {
+    display: block;
+    content: attr(data-value);
+    transform: translate(-50%, 100%);
+    text-align: center;
+    width: 40px;
+  }

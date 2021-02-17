@@ -47,13 +47,19 @@ nuovaImmagine = {'istogrammi': {}, 'oggetti': {}}
 nuovaImmagine['istogrammi'] = istogrammi
 nuovaImmagine['oggetti'] = oggetti
 
-histVal = 60
-objectVal = 25
-ssimVal = 15
+
 
 while True:
 
     newCampione = cv2.imread('./public/campione.jpg')
+
+    with open('./algWeights.json') as algWeightsFile:
+        algWeights = json.load(algWeightsFile)
+        histVal = float(algWeights['hist'])
+        objectVal = float(algWeights['yolo'])
+        ssimVal = float(algWeights['ssim'])
+        print("Pesi degli algoritmi aggiornati")
+
     if(not(newCampione.shape == campione.shape and not(np.bitwise_xor(newCampione,campione).any()))):
         print("Immagine campione modificata, ricontrollo il campione")
         campione = newCampione
