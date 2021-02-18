@@ -103,9 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-weights/yolov3.weights
-
 __pycache__/
 
 .vscode/
-*.jpg
