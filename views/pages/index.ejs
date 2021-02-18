@@ -8,13 +8,11 @@
                     <div class="container-fluid js-tm-page-content" data-page-no="1" data-page-type="gallery">
                         <div class="tm-img-gallery-container">
                             <div class="tm-img-gallery gallery-one grid">
-                                <%- include('../partials/singlePhoto', {"photo": {
-                                    "ID" : 0,
-                                    "path" : "campione.jpg"
-                                }}); %>
-                                <% for(var i=0; i<imagesParsed.length; i++) {%>
-                                    <%- include('../partials/singlePhoto', {"photo": imagesParsed[i]}); %>
-                                        <% } %>
+                                <%- include('../partials/singlePhoto', {"photo": { "ID" : 0, "path" : "campione.jpg"
+                                    }}); %>
+                                    <% for(var i=0; i<imagesParsed.length; i++) {%>
+                                        <%- include('../partials/singlePhoto', {"photo": imagesParsed[i]}); %>
+                                            <% } %>
 
                             </div>
                         </div>
@@ -56,97 +54,97 @@
             <div class="loader-section section-right"></div>
 
         </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
 
-            <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
 
-            <script>
-                FilePond.registerPlugin(FilePondPluginImagePreview);
-                FilePond.registerPlugin(FilePondPluginFileEncode);
-                FilePond.registerPlugin(FilePondPluginFileValidateType);
-                FilePond.parse(document.body);
-                FilePond.setOptions({
-                    server: '/upload_photos',
-                    acceptedFileTypes: ['image/*'],
-                    allowRevert: false
-                });
-
-
-                document.addEventListener('FilePond:processfile', e => {
-                    $.getJSON("/util/images", function (data) {
-                        $(data).each(function (key, val) {
-                            if (!$('.tm-img-gallery .grid-item img[data-id="' + val.ID + '"]').length) {
-
-                                var HTML = '<div class="grid-item flexmasonry-item">';
-                                HTML += '<figure class="effect-sadie">';
-                                HTML += '<img src="' + val.path + '" data-id="' + val.ID + '" alt="Image" class="img-fluid tm-img">';
-                                HTML += '<figcaption>';
-                                HTML += '<h2 class="tm-figure-title"> <span><strong></strong></span></h2>';
-                                HTML += '<p class="tm-figure-description">';
-                                HTML += '</p>';
-                                HTML += '<a href="' + val.path + '">View more</a>';
-                                HTML += '</figcaption>';
-                                HTML += '</figure>';
-                                HTML += '</div>';
-
-                                $('.flexmasonry').append(HTML);
-
-                            }
+        <script>
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            FilePond.registerPlugin(FilePondPluginFileEncode);
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+            FilePond.parse(document.body);
+            FilePond.setOptions({
+                server: '/upload_photos',
+                acceptedFileTypes: ['image/*'],
+                allowRevert: false
+            });
 
 
-                        });
-                        /* $('.tm-img-gallery .grid-item  img').each(function (key, val) {
-                                            console.log($(val).data("id"));
-                        }) */
-                    })
-                });
+            document.addEventListener('FilePond:processfile', e => {
+                $.getJSON("/util/images", function (data) {
+                    $(data).each(function (key, val) {
+                        if (!$('.tm-img-gallery .grid-item img[data-id="' + val.ID + '"]').length) {
 
-                $(function () {
+                            var HTML = '<div class="grid-item flexmasonry-item">';
+                            HTML += '<figure class="effect-sadie">';
+                            HTML += '<img src="' + val.path + '" data-id="' + val.ID + '" alt="Image" class="img-fluid tm-img">';
+                            HTML += '<figcaption>';
+                            HTML += '<h2 class="tm-figure-title"> <span><strong></strong></span></h2>';
+                            HTML += '<p class="tm-figure-description">';
+                            HTML += '</p>';
+                            HTML += '<a href="' + val.path + '">View more</a>';
+                            HTML += '</figcaption>';
+                            HTML += '</figure>';
+                            HTML += '</div>';
 
-                    const socket = io("ws://localhost:3001");
+                            $('.flexmasonry').append(HTML);
 
-                    socket.on('imageUpdate', (data) => {
-                        console.log("Message received from socket");
-                        var update = JSON.parse(data);
-                        $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().find('.tm-figure-description').text(update.perc + "%");
-                        $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().parent().attr("data-perc", update.perc)
+                        }
 
-                        $('.tm-img-gallery').find('.grid-item').sort(function(a, b){
-                            return b.dataset.perc - a.dataset.perc;
-                        }).appendTo($('.tm-img-gallery'))
-                        FlexMasonry.refreshAll()
+
                     });
+                    /* $('.tm-img-gallery .grid-item  img').each(function (key, val) {
+                                        console.log($(val).data("id"));
+                    }) */
+                })
+            });
 
-                    $('.tm-img-gallery').find('.grid-item').sort(function(a, b){
+            $(function () {
+
+                const socket = io("ws://localhost:3001");
+
+                socket.on('imageUpdate', (data) => {
+                    console.log("Message received from socket");
+                    var update = JSON.parse(data);
+                    $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().find('.tm-figure-description').text(update.perc + "%");
+                    $('.tm-img-gallery .grid-item img[data-id="' + update.ID + '"]').parent().parent().attr("data-perc", update.perc)
+
+                    $('.tm-img-gallery').find('.grid-item').sort(function (a, b) {
                         return b.dataset.perc - a.dataset.perc;
                     }).appendTo($('.tm-img-gallery'))
                     FlexMasonry.refreshAll()
-
-
-                    $('.gallery-one').magnificPopup({
-                        delegate: 'a',
-                        type: 'image',
-                        gallery: {
-                            enabled: true
-                        }
-                    });
-                    $('#tmNavbar a').click(function () {
-                        $('#tmNavbar').collapse('hide');
-
-                    });
-                    $('body').addClass('loaded');
-                    $(".tm-copyright-year").text(new Date().getFullYear());
-                    FlexMasonry.init('.grid', {
-                        responsive: false,
-                        numCols: 5
-                    });
                 });
 
+                $('.tm-img-gallery').find('.grid-item').sort(function (a, b) {
+                    return b.dataset.perc - a.dataset.perc;
+                }).appendTo($('.tm-img-gallery'))
+                FlexMasonry.refreshAll()
 
-            </script>
 
-            </body>
+                $('.gallery-one').magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    gallery: {
+                        enabled: true
+                    }
+                });
+                $('#tmNavbar a').click(function () {
+                    $('#tmNavbar').collapse('hide');
 
-            </html>
+                });
+                $('body').addClass('loaded');
+                $(".tm-copyright-year").text(new Date().getFullYear());
+                FlexMasonry.init('.grid', {
+                    responsive: false,
+                    numCols: 5
+                });
+            });
+
+
+        </script>
+
+        </body>
+
+        </html>

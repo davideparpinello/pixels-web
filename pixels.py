@@ -48,7 +48,6 @@ nuovaImmagine['istogrammi'] = istogrammi
 nuovaImmagine['oggetti'] = oggetti
 
 
-
 while True:
 
     newCampione = cv2.imread('./public/campione.jpg')
@@ -60,7 +59,7 @@ while True:
         ssimVal = float(algWeights['ssim'])
         print("Pesi degli algoritmi aggiornati")
 
-    if(not(newCampione.shape == campione.shape and not(np.bitwise_xor(newCampione,campione).any()))):
+    if(not(newCampione.shape == campione.shape and not(np.bitwise_xor(newCampione, campione).any()))):
         print("Immagine campione modificata, ricontrollo il campione")
         campione = newCampione
 
@@ -98,11 +97,11 @@ while True:
         for item in images:
 
             if 'perc' not in item:
-                
+
                 path = './public/' + item['path']
                 print(path)
                 img = cv2.imread(path)
-                
+
                 ID = item['ID']
 
                 print('Analyzing image ID ' + str(ID) + '...')
