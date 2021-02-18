@@ -9,7 +9,7 @@ Repo contenente il server web in Node.js e gli script Python per il progetto del
 
 > <b>Attenzione:</b> il server è configurato per essere eseguito solamente in localhost.
 
-[Link al report](http://google.com)
+## [Link al report](./Report%20Pixels.pdf)
 
 ## Requisiti
 - Node.js e NPM
