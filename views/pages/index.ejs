@@ -116,6 +116,7 @@
                         $('.tm-img-gallery').find('.grid-item').sort(function(a, b){
                             return b.dataset.perc - a.dataset.perc;
                         }).appendTo($('.tm-img-gallery'))
+                        FlexMasonry.refreshAll()
                     });
 
                     $('.tm-img-gallery').find('.grid-item').sort(function(a, b){
