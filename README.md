@@ -2,7 +2,7 @@
 
 Repo contenente il server web in Node.js e gli script Python per il progetto del corso di Comunicazioni Multimediali (DISI Unitn, A.A. 2020/21)
 ## Membri
-- Alessandro Ferronato
+- Alessandro Ferronato (203110)
 - Giorgia Giro (201725)
 - Davide Parpinello (201494)
 - Martina Peruzzo (204789)
